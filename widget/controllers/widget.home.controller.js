@@ -1803,9 +1803,12 @@
                         WidgetHome.items.forEach(function(item) {
                             if (window.EngagementService) {
                                 window.EngagementService.loadEngagementData(item.id, userId, function(data) {
-                                    item.likeCount = data.likeCount;
-                                    item.commentCount = data.commentCount;
-                                    item.isLiked = data.isLiked;
+                                    item.engagementData = {
+                                        likeCount: data.likeCount,
+                                        commentCount: data.commentCount,
+                                        shareCount: data.shareCount,
+                                        isLiked: data.isLiked
+                                    };
 
                                     if (!$scope.$$phase) {
                                         $scope.$apply();
@@ -1837,8 +1840,18 @@
 
                         if (window.EngagementService) {
                             window.EngagementService.toggleLike(item.id, userId, function(result) {
-                                item.isLiked = result.liked;
-                                item.likeCount = result.count;
+                                if (!item.engagementData) {
+                                    item.engagementData = {};
+                                }
+                                item.engagementData.isLiked = result.liked;
+                                item.engagementData.likeCount = result.count;
+
+                                if (result.liked) {
+                                    Analytics.trackAction('media_liked', {
+                                        mediaId: item.id,
+                                        mediaTitle: item.data.title
+                                    });
+                                }
 
                                 if (!$scope.$$phase) {
                                     $scope.$apply();

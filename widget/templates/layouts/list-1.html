@@ -79,6 +79,20 @@
                                     <i class="glyphicon glyphicon-eye-open"></i>
                                 </span>
                             </p>
+                            <div class="engagement-mini" style="display: flex; gap: 12px; margin-top: 5px; font-size: 12px; color: #757575;">
+                                <span ng-if="item.engagementData" style="display: flex; align-items: center; gap: 3px;">
+                                    <i class="glyphicon glyphicon-heart" style="font-size: 12px;"></i>
+                                    {{item.engagementData.likeCount || 0}}
+                                </span>
+                                <span ng-if="item.engagementData" style="display: flex; align-items: center; gap: 3px;">
+                                    <i class="glyphicon glyphicon-comment" style="font-size: 12px;"></i>
+                                    {{item.engagementData.commentCount || 0}}
+                                </span>
+                                <span ng-if="item.engagementData" style="display: flex; align-items: center; gap: 3px;">
+                                    <i class="glyphicon glyphicon-share-alt" style="font-size: 12px;"></i>
+                                    {{item.engagementData.shareCount || 0}}
+                                </span>
+                            </div>
                             <div class="date-container">
                                 <span class="list-item-date" data-ng-if="item.data.mediaDate">{{item.data.mediaDate  | jsDate | date:"MMMM dd, yyyy"}} </span>
                                 <svg ng-if="item.data.opened && WidgetHome.media.data.content.indicatePlayedItems" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">

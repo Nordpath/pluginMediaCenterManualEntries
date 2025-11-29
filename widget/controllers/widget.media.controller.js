@@ -531,6 +531,15 @@
                 };
 
                 WidgetMedia.share = function () {
+                    if (!$rootScope.user || !$rootScope.user._id) {
+                        buildfire.dialog.toast({
+                            message: 'Please sign in to share',
+                            type: 'info',
+                            duration: 3000
+                        });
+                        return;
+                    }
+
                     var link = {};
                     link.title = WidgetMedia.item.data.title;
                     link.type = "website";
@@ -548,9 +557,18 @@
                                 text: link.description,
                                 image: link.imageUrl,
                                 link: result.url
-                            }, function (err, result) {
+                            }, function (err, shareResult) {
                                 if (!err && window.EngagementService && WidgetMedia.item && WidgetMedia.item.id && $rootScope.user && $rootScope.user._id) {
-                                    window.EngagementService.recordShare(WidgetMedia.item.id, $rootScope.user._id);
+                                    window.EngagementService.recordShare(WidgetMedia.item.id, $rootScope.user._id, function(recordErr) {
+                                        if (!recordErr) {
+                                            WidgetMedia.loadEngagementData();
+
+                                            Analytics.trackAction('media_shared', {
+                                                mediaId: WidgetMedia.item.id,
+                                                mediaTitle: WidgetMedia.item.data.title
+                                            });
+                                        }
+                                    });
                                 }
                             });
 
@@ -782,41 +800,66 @@
 
                 WidgetMedia.likeCount = 0;
                 WidgetMedia.commentCount = 0;
+                WidgetMedia.shareCount = 0;
 
-                if (WidgetMedia.item && WidgetMedia.item.id && window.EngagementService) {
-                    window.EngagementService.getLikeCount(WidgetMedia.item.id, function(count) {
-                        WidgetMedia.likeCount = count;
-                        if (!$scope.$$phase) $scope.$apply();
-                    });
+                WidgetMedia.loadEngagementData = function() {
+                    if (WidgetMedia.item && WidgetMedia.item.id && window.EngagementService) {
+                        var userId = $rootScope.user ? $rootScope.user._id : null;
+                        window.EngagementService.loadEngagementData(WidgetMedia.item.id, userId, function(data) {
+                            WidgetMedia.likeCount = data.likeCount;
+                            WidgetMedia.commentCount = data.commentCount;
+                            WidgetMedia.shareCount = data.shareCount;
+                            if (!$scope.$$phase) $scope.$apply();
+                        });
+                    }
+                };
 
-                    window.EngagementService.getCommentCount(WidgetMedia.item.id, function(count) {
-                        WidgetMedia.commentCount = count;
-                        if (!$scope.$$phase) $scope.$apply();
-                    });
-                }
+                WidgetMedia.loadEngagementData();
 
                 WidgetMedia.toggleLike = function () {
+                    if (!$rootScope.user || !$rootScope.user._id) {
+                        buildfire.dialog.toast({
+                            message: 'Please sign in to like this item',
+                            type: 'info',
+                            duration: 3000
+                        });
+                        return;
+                    }
+
                     WidgetMedia.bookmark();
 
-                    if (window.EngagementService && WidgetMedia.item && WidgetMedia.item.id && $rootScope.user && $rootScope.user._id) {
+                    if (window.EngagementService && WidgetMedia.item && WidgetMedia.item.id) {
                         window.EngagementService.toggleLike(WidgetMedia.item.id, $rootScope.user._id, function(result) {
                             WidgetMedia.likeCount = result.count;
+
+                            if (result.liked) {
+                                Analytics.trackAction('media_liked', {
+                                    mediaId: WidgetMedia.item.id,
+                                    mediaTitle: WidgetMedia.item.data.title
+                                });
+                            }
+
                             if (!$scope.$$phase) $scope.$apply();
                         });
                     }
                 };
 
                 WidgetMedia.openComments = function () {
+                    if (!$rootScope.user || !$rootScope.user._id) {
+                        buildfire.dialog.toast({
+                            message: 'Please sign in to comment',
+                            type: 'info',
+                            duration: 3000
+                        });
+                        return;
+                    }
+
                     WidgetMedia.addNote();
 
-                    if (window.EngagementService && WidgetMedia.item && WidgetMedia.item.id && $rootScope.user && $rootScope.user._id) {
-                        window.EngagementService.recordComment(WidgetMedia.item.id, $rootScope.user._id, function() {
-                            window.EngagementService.getCommentCount(WidgetMedia.item.id, function(count) {
-                                WidgetMedia.commentCount = count;
-                                if (!$scope.$$phase) $scope.$apply();
-                            });
-                        });
-                    }
+                    Analytics.trackAction('media_comment_opened', {
+                        mediaId: WidgetMedia.item.id,
+                        mediaTitle: WidgetMedia.item.data.title
+                    });
                 };
 
                 WidgetMedia.addToPlaylist = function () {

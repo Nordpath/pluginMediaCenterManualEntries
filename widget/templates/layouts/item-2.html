@@ -39,6 +39,22 @@
                         <i class="glyphicon glyphicon-option-horizontal" ng-click="WidgetMedia.showDrawer()" role="button" aria-label="{{WidgetMedia.item.data.title}} media item options"></i>
                     </div>
                 </div>
+                <div class="engagement-section" style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #e0e0e0;">
+                    <div class="engagement-actions" style="display: flex; align-items: center; gap: 20px;">
+                        <div class="engagement-action" ng-click="WidgetMedia.toggleLike()" style="display: flex; align-items: center; gap: 5px; cursor: pointer;">
+                            <i class="glyphicon" ng-class="WidgetMedia.item.data.bookmarked ? 'glyphicon-heart' : 'glyphicon-heart-empty'" style="font-size: 18px; color: #e91e63;" role="button" aria-label="Like button"></i>
+                            <span style="font-size: 14px;">{{WidgetMedia.likeCount || 0}}</span>
+                        </div>
+                        <div class="engagement-action" ng-click="WidgetMedia.openComments()" style="display: flex; align-items: center; gap: 5px; cursor: pointer;">
+                            <i class="glyphicon glyphicon-comment" style="font-size: 18px;" role="button" aria-label="Comment button"></i>
+                            <span style="font-size: 14px;">{{WidgetMedia.commentCount || 0}}</span>
+                        </div>
+                        <div class="engagement-action" ng-click="WidgetMedia.share()" style="display: flex; align-items: center; gap: 5px; cursor: pointer;">
+                            <i class="glyphicon glyphicon-share-alt" style="font-size: 18px;" role="button" aria-label="Share button"></i>
+                            <span style="font-size: 14px;">{{WidgetMedia.shareCount || 0}}</span>
+                        </div>
+                    </div>
+                </div>
                 <p class="wysiwyg" ng-if="WidgetMedia.item.data.body" ng-bind-html="WidgetMedia.item.data.body | safeHtml"></p>
             </div>
         </div>
