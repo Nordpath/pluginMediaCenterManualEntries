@@ -5,7 +5,7 @@
                 style="max-height: {{(WidgetMedia.deviceWidth*9)/16+'px'}} !important;"
                 class="plugin-slider text-center">
                 <div ng-class="WidgetMedia.showVideo == false ? '' : 'video-container-background'"
-                    style="max-height: {{(WidgetMedia.deviceWidth*9)/16+'px'}} !important;" class="plugin-slide">
+                    style="max-height: {{(WidgetMedia.deviceWidth*9)/16+'px'}} !important; position: relative;" class="plugin-slide">
 
                     <div ng-if="!WidgetMedia.fullScreen && WidgetMedia.item.data.topImage && !WidgetMedia.item.imageLoaded && !WidgetMedia.showVideo && !(skipMediaPage && WidgetMedia.item.data.videoUrl)"
                          class="image-placeholder" ng-style="{'padding-top': ((9 / 16) * 100) + '%'}">
@@ -20,7 +20,11 @@
                         load-image="16x9" style="width:100%; max-height: {{(WidgetMedia.deviceWidth*9)/16+'px'}} !important; object-fit: contain; background-color: #000; border-radius: 8px;"
                         crop-width="640" crop-height="360" crop-type="fit" title="{{WidgetMedia.item.data.title}} top image" aria-label="{{WidgetMedia.item.data.title}} top image"
                         data-final-src="{{WidgetMedia.item.data.topImage }}" image-item="WidgetMedia.item" alt="{{WidgetMedia.item.data.title}} top image"/>
-                        <img ng-if="!WidgetMedia.item.data.topImage && !WidgetMedia.showVideo" aria-hidden="true" src="../../../styles/media/holder-16x9.png" style="width:100%;">
+                    <div ng-if="!WidgetMedia.fullScreen && !WidgetMedia.showVideo" class="item-overlay-text" id="itemOverlayText">
+                        <h2 class="overlay-title" id="overlayTitle">{{WidgetMedia.item.data.title}}</h2>
+                        <p class="overlay-date" id="overlayDate" ng-if="WidgetMedia.item.data.dateCreated">{{WidgetMedia.item.data.dateCreated | date:'MMM d, yyyy'}}</p>
+                    </div>
+                    <img ng-if="!WidgetMedia.item.data.topImage && !WidgetMedia.showVideo" aria-hidden="true" src="../../../styles/media/holder-16x9.png" style="width:100%;">
                     <div id="myVideo" ng-include="'templates/layouts/video-player.html'"></div>
                 </div>
             </div>
@@ -75,5 +79,22 @@
 
              viewsg.style.color =  appTheme.colors.bodyText;
              iconViewg.style.color =  appTheme.colors.icons;
+
+             let overlayTitle = document.getElementById("overlayTitle");
+             let overlayDate = document.getElementById("overlayDate");
+
+             if (overlayTitle) {
+                 overlayTitle.style.fontFamily = appTheme.fonts.fontFamily || 'Roboto, sans-serif';
+                 overlayTitle.style.fontWeight = appTheme.fonts.titleFontWeight || '700';
+                 overlayTitle.style.fontSize = (appTheme.fonts.titleFontSize || 18) + 'px';
+                 overlayTitle.style.color = appTheme.colors.titleText || '#ffffff';
+             }
+
+             if (overlayDate) {
+                 overlayDate.style.fontFamily = appTheme.fonts.fontFamily || 'Roboto, sans-serif';
+                 overlayDate.style.fontWeight = appTheme.fonts.bodyFontWeight || '400';
+                 overlayDate.style.fontSize = (appTheme.fonts.bodyFontSize || 14) + 'px';
+                 overlayDate.style.color = appTheme.colors.bodyText || 'rgba(255, 255, 255, 0.9)';
+             }
     });
 </script>
