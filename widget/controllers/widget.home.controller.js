@@ -1879,6 +1879,7 @@
                     getCurrentUser(() => {
                         const userId = $rootScope.user ? $rootScope.user._id : 'anonymous';
 
+                        // Record the share engagement
                         if (window.EngagementService) {
                             window.EngagementService.recordShare(item.id, userId, function(err) {
                                 if (!err) {
@@ -1887,14 +1888,33 @@
                             });
                         }
 
-                        buildfire.actionItems.execute(
-                            {
-                                title: item.data.title,
-                                description: item.data.summary || '',
-                                url: item.data.topImage || ''
-                            },
-                            function() {}
-                        );
+                        // Create deep link and share
+                        var link = {};
+                        link.title = item.data.title;
+                        link.type = "website";
+                        link.description = item.data.summary ? item.data.summary : '';
+                        link.imageUrl = item.data.topImage ? item.data.topImage : null;
+
+                        link.data = {
+                            "mediaId": item.id
+                        };
+
+                        buildfire.deeplink.generateUrl(link, function (err, result) {
+                            if (err) {
+                                console.error('Error generating deep link:', err);
+                            } else {
+                                buildfire.device.share({
+                                    subject: link.title,
+                                    text: link.description,
+                                    image: link.imageUrl,
+                                    link: result.url
+                                }, function (err, result) {
+                                    if (err) {
+                                        console.error('Error sharing:', err);
+                                    }
+                                });
+                            }
+                        });
                     });
                 };
             }]);
