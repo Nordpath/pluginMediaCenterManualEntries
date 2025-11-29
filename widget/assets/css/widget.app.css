@@ -1591,7 +1591,8 @@ input[type="checkbox"]:checked+.subcategory-label.minus::before {
 .list-layout-3 .list-3-overlay-title {
     margin: 0;
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 700;
+    font-family: 'Roboto', sans-serif;
     color: #ffffff;
     line-height: 1.4;
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
@@ -1605,6 +1606,8 @@ input[type="checkbox"]:checked+.subcategory-label.minus::before {
 
 .list-layout-3 .list-3-overlay-date {
     font-size: 13px;
+    font-weight: 700;
+    font-family: 'Roboto', sans-serif;
     color: rgba(255, 255, 255, 0.9);
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
@@ -1634,12 +1637,7 @@ input[type="checkbox"]:checked+.subcategory-label.minus::before {
 }
 
 .list-layout-3 .list-3-title {
-    flex: 1;
-    margin: 0;
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--bf-theme-bodyText, #000);
-    line-height: 1.4;
+    display: none;
 }
 
 .list-layout-3 .list-3-actions {
