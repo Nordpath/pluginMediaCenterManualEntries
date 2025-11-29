@@ -50,7 +50,7 @@
                         <div
                                 ng-if="item.data.topImage && !item.imageLoaded"
                                 class="image-placeholder"
-                                ng-style="{'padding-top': ((280 / 340) * 100) + '%'}">
+                                ng-style="{'padding-top': ((240 / 340) * 100) + '%'}">
                             <div class="image-placeholder__dots">
                                 <span></span>
                                 <span></span>
@@ -58,7 +58,7 @@
                             </div>
                         </div>
                         <img ng-show="item.data.topImage && item.imageLoaded" alt="{{item.data.title}}" class="load-image-hidden list-3-image" aria-hidden="true"
-                             load-image="4x5" style="width:100%; border-radius: 8px;" crop-width="340" crop-height="425" crop-type="crop" image-item="item"
+                             load-image="16x9" style="width:100%; border-radius: 8px; object-fit: contain; height: 240px; background-color: #000;" crop-width="340" crop-height="240" crop-type="fit" image-item="item"
                              data-final-src="{{item.data.topImage}}" tabindex="0">
                         <img alt="{{item.data.title}}" aria-hidden="true" ng-if="!item.data.topImage" src="../../../styles/media/holder-16x9.png"
                             style="width:100%; border-radius: 8px;">
