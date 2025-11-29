@@ -1962,7 +1962,7 @@
                 };
 
                 WidgetHome.submitReport = function(item, reason) {
-                    buildfire.dialog.hide();
+                    // Dialog closes automatically when action button is clicked
 
                     getCurrentUser(() => {
                         const userId = $rootScope.user ? $rootScope.user._id : 'anonymous';
