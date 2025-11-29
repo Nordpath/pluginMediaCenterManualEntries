@@ -1542,6 +1542,7 @@ input[type="checkbox"]:checked+.subcategory-label.minus::before {
     flex-direction: column;
     gap: 20px;
     padding: 0;
+    padding-bottom: 220px;
 }
 
 .list-layout-3 .list-3-item {
@@ -1751,6 +1752,7 @@ input[type="checkbox"]:checked+.subcategory-label.minus::before {
     .list-layout-3 .widget-home-items-container {
         gap: 16px;
         padding: 0 8px;
+        padding-bottom: 220px;
     }
 
     .list-layout-3 .list-3-content {
@@ -1806,6 +1808,7 @@ input[type="checkbox"]:checked+.subcategory-label.minus::before {
     .list-layout-3 .widget-home-items-container {
         gap: 18px;
         padding: 0 12px;
+        padding-bottom: 220px;
     }
 
     .list-layout-3 .list-3-content {
@@ -1824,6 +1827,7 @@ input[type="checkbox"]:checked+.subcategory-label.minus::before {
     .list-layout-3 .widget-home-items-container {
         gap: 20px;
         padding: 0 16px;
+        padding-bottom: 220px;
     }
 
     /* Banner responsive adjustments */
@@ -1838,6 +1842,7 @@ input[type="checkbox"]:checked+.subcategory-label.minus::before {
     .list-layout-3 .widget-home-items-container {
         gap: 24px;
         padding: 0 20px;
+        padding-bottom: 220px;
         max-width: 640px;
         margin: 0 auto;
     }
@@ -1874,6 +1879,7 @@ input[type="checkbox"]:checked+.subcategory-label.minus::before {
 @media only screen and (max-width: 896px) and (orientation: landscape) {
     .list-layout-3 .widget-home-items-container {
         gap: 12px;
+        padding-bottom: 220px;
     }
 
     .list-layout-3 .list-3-content {
@@ -1912,24 +1918,24 @@ input[type="checkbox"]:checked+.subcategory-label.minus::before {
     .list-layout-3 .widget-home-items-container {
         padding-left: max(12px, env(safe-area-inset-left));
         padding-right: max(12px, env(safe-area-inset-right));
-        padding-bottom: env(safe-area-inset-bottom);
+        padding-bottom: calc(220px + env(safe-area-inset-bottom));
     }
 
     /* Extra padding when global playlist is visible */
     .list-layout-3.pb75 .widget-home-items-container {
-        padding-bottom: calc(75px + env(safe-area-inset-bottom));
+        padding-bottom: calc(295px + env(safe-area-inset-bottom));
     }
 }
 
 /* Android gesture navigation safe area */
 @media only screen and (max-width: 767px) {
     .list-layout-3 .widget-home-items-container {
-        padding-bottom: 20px;
+        padding-bottom: 220px;
     }
 
     /* Extra padding when FAB or bottom nav is visible */
     .list-layout-3.pb75 .widget-home-items-container {
-        padding-bottom: 95px;
+        padding-bottom: 295px;
     }
 }
 
