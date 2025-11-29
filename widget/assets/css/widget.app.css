@@ -1011,11 +1011,11 @@ img.done-icon {
 
 #emptyContainer,
 #filterEmptyContainer {
-    display: none;
-    background-image: url('../images/empty_page.svg');
+    display: none !important;
+    background-image: none;
     background-repeat: no-repeat;
     background-position: center;
-    height: 100vh;
+    height: 0;
     position: relative;
 }
 
