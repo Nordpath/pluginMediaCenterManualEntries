@@ -776,5 +776,61 @@
                     }
                 };
 
+                WidgetMedia.likeCount = 0;
+                WidgetMedia.commentCount = 0;
+
+                WidgetMedia.toggleLike = function () {
+                    WidgetMedia.bookmark();
+                };
+
+                WidgetMedia.openComments = function () {
+                    WidgetMedia.addNote();
+                };
+
+                WidgetMedia.addToPlaylist = function () {
+                    var item = WidgetMedia.item;
+                    if (item.data.audioUrl || item.data.videoUrl) {
+                        Buildfire.actionItems.execute({
+                            action: 'addToPlaylist',
+                            title: item.data.title,
+                            item: item
+                        });
+                    }
+                };
+
+                WidgetMedia.reportContent = function () {
+                    buildfire.dialog.show({
+                        title: 'Report Content',
+                        message: 'Please select a reason for reporting this content:',
+                        buttons: [
+                            { text: 'Inappropriate', type: 'danger', key: 'inappropriate' },
+                            { text: 'Spam', type: 'danger', key: 'spam' },
+                            { text: 'Misleading', type: 'danger', key: 'misleading' },
+                            { text: 'Cancel', type: 'default', key: 'cancel' }
+                        ]
+                    }, function (err, result) {
+                        if (!err && result && result.selectedButton && result.selectedButton.key !== 'cancel') {
+                            buildfire.notifications.pushNotification.schedule({
+                                title: 'Content Reported',
+                                text: 'Report: ' + result.selectedButton.key + ' - ' + WidgetMedia.item.data.title,
+                                queryString: 'mediaId=' + WidgetMedia.item.id + '&reason=' + result.selectedButton.key
+                            }, function (err) {
+                                if (!err) {
+                                    buildfire.dialog.toast({
+                                        message: 'Thank you for reporting this content',
+                                        type: 'success',
+                                        duration: 3000
+                                    });
+                                }
+                            });
+                        }
+                    });
+                };
+
+                WidgetMedia.goBack = function () {
+                    $rootScope.showFeed = true;
+                    Location.goBack();
+                };
+
             }]);
 })(window.angular, window);

@@ -1,0 +1,139 @@
+<div class="holder padding-zero modern-detail-view">
+    <div class="detail-header">
+        <button class="back-button" ng-click="WidgetMedia.goBack()" aria-label="Go back">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+        <h5 class="detail-title">{{WidgetMedia.item.data.title}}</h5>
+        <button class="more-button" ng-click="WidgetMedia.showDrawer()" aria-label="More options">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" fill="currentColor"/>
+            </svg>
+        </button>
+    </div>
+
+    <div class="detail-media-section">
+        <div ng-if="!WidgetMedia.item.imageLoaded && WidgetMedia.item.data.topImage && !WidgetMedia.showVideo"
+             class="image-placeholder" ng-style="{'padding-top': '125%'}">
+            <div class="image-placeholder__dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        <img ng-show="WidgetMedia.item.imageLoaded && !WidgetMedia.showVideo"
+            ng-if="WidgetMedia.item.data.topImage"
+            load-image="4x5"
+            crop-width="800" crop-height="1000" crop-type="crop"
+            title="{{WidgetMedia.item.data.title}}"
+            aria-label="{{WidgetMedia.item.data.title}}"
+            data-final-src="{{WidgetMedia.item.data.topImage}}"
+            image-item="WidgetMedia.item"
+            alt="{{WidgetMedia.item.data.title}}"
+            class="detail-image"/>
+        <div id="myVideo" ng-if="WidgetMedia.showVideo" ng-include="'templates/layouts/video-player.html'"></div>
+    </div>
+
+    <div class="detail-actions-bar">
+        <div class="detail-actions-left">
+            <button class="action-btn"
+                    ng-click="WidgetMedia.toggleLike()"
+                    ng-class="{'active': WidgetMedia.item.data.bookmarked}"
+                    aria-label="{{WidgetMedia.item.data.bookmarked ? 'Unlike' : 'Like'}} post">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path ng-if="!WidgetMedia.item.data.bookmarked" d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path ng-if="WidgetMedia.item.data.bookmarked" d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span ng-if="WidgetMedia.likeCount > 0">{{WidgetMedia.likeCount}}</span>
+            </button>
+            <button class="action-btn"
+                    ng-click="WidgetMedia.openComments()"
+                    aria-label="View comments">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span ng-if="WidgetMedia.commentCount > 0">{{WidgetMedia.commentCount}}</span>
+            </button>
+            <button class="action-btn"
+                    ng-click="WidgetMedia.share()"
+                    ng-if="allowShare"
+                    aria-label="Share post">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </div>
+        <div class="detail-actions-right">
+            <button class="action-btn"
+                    ng-click="WidgetMedia.addToPlaylist()"
+                    ng-if="WidgetMedia.item.data.videoUrl || WidgetMedia.item.data.audioUrl"
+                    aria-label="Add to playlist">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19 11H5M12 18V4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <div class="detail-content">
+        <div class="detail-meta">
+            <p class="detail-date" ng-if="WidgetMedia.item.data.dateCreated">
+                {{WidgetMedia.item.data.dateCreated | date:'MMM d, yyyy'}}
+            </p>
+            <p class="detail-views" ng-if="showViewCount">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                {{WidgetMedia.count || 0}} views
+            </p>
+        </div>
+
+        <div class="detail-body">
+            <h2 class="detail-main-title">{{WidgetMedia.item.data.title}}</h2>
+            <p class="detail-summary" ng-if="WidgetMedia.item.data.summary">{{WidgetMedia.item.data.summary}}</p>
+            <div class="detail-description wysiwyg" ng-if="WidgetMedia.item.data.body" ng-bind-html="WidgetMedia.item.data.body | safeHtml"></div>
+        </div>
+
+        <div class="detail-media-controls" ng-if="WidgetMedia.item.data.videoUrl || WidgetMedia.item.data.audioUrl">
+            <button class="media-control-btn"
+                    ng-click="WidgetMedia.toggleShowVideo(!WidgetMedia.showVideo);"
+                    ng-if="WidgetMedia.item.data.videoUrl && !skipMediaPage">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <polygon points="5 3 19 12 5 21 5 3" fill="currentColor"/>
+                </svg>
+                {{WidgetMedia.showVideo ? 'Hide Video' : 'Play Video'}}
+            </button>
+            <button class="media-control-btn"
+                    ng-click="WidgetMedia.playAudio();"
+                    ng-if="WidgetMedia.item.data.audioUrl && !skipMediaPage">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 18v-6a9 9 0 0 1 18 0v6M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Play Audio
+            </button>
+            <a class="media-control-btn"
+               ng-if="(WidgetMedia.item.data.srcUrl || WidgetMedia.item.data.audioUrl || WidgetMedia.item.data.videoUrl) && allowSource && WidgetMedia.online"
+               ng-click="WidgetMedia.openLink(WidgetMedia.item)" target="_blank">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                View Source
+            </a>
+        </div>
+
+        <div class="detail-report">
+            <button class="report-btn" ng-click="WidgetMedia.reportContent()" aria-label="Report content">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <line x1="12" y1="9" x2="12" y2="13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <line x1="12" y1="17" x2="12.01" y2="17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Report
+            </button>
+        </div>
+    </div>
+
+    <div ng-include="'templates/layouts/bottom-logo.html'"></div>
+</div>
