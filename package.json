@@ -4,7 +4,7 @@
   "description": "\"media-center-plugin\"",
   "supportSite": "http://learn.appdocumentation.com/plugin-tutorials/media-center-manual-plugin-tutorial",
   "scripts": {
-    "postinstall": "./node_modules/.bin/bower install",
+    "postinstall": "./node_modules/.bin/bower install --allow-root",
     "test": "./node_modules/.bin/karma start --single-run --browsers PhantomJS",
     "build": "gulp build && cd ../ && rm -rf pluginMediaCenterManualEntries.zip && zip -r pluginMediaCenterManualEntries.zip pluginMediaCenterManualEntries_release && rm -rf pluginMediaCenterManualEntries_release"
   },
@@ -45,9 +45,7 @@
     "karma-jasmine": "^0.3.6",
     "karma-junit-reporter": "^0.3.8",
     "karma-mocha": "^0.2.0",
-    "karma-phantomjs-launcher": "^0.2.2",
     "mocha": "^2.2.5",
-    "phantomjs": "^1.9.17",
     "uglify-es": "^3.3.9"
   }
 }

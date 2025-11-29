@@ -764,5 +764,17 @@
                     VideoJSController.pause();
                 });
 
+                WidgetMedia.openBottomLogoLink = ($event) => {
+                    if ($event) {
+                        $event.preventDefault();
+                        $event.stopPropagation();
+                    }
+
+                    const bottomLogo = WidgetMedia.media && WidgetMedia.media.data && WidgetMedia.media.data.content && WidgetMedia.media.data.content.bottomLogo;
+                    if (bottomLogo && bottomLogo.linkUrl) {
+                        buildfire.navigation.openWindow(bottomLogo.linkUrl, '_blank');
+                    }
+                };
+
             }]);
 })(window.angular, window);

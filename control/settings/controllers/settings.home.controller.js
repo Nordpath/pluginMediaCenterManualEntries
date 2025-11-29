@@ -61,6 +61,17 @@
 				if (typeof (Settings.data.content.startWithAutoJumpByDefault  ) === 'undefined') {
 					Settings.data.content.startWithAutoJumpByDefault   = false;
 				}
+				if (typeof (Settings.data.content.bottomLogo) === 'undefined') {
+					Settings.data.content.bottomLogo = {
+						enabled: false,
+						displayMode: 'logo',
+						logoImage: null,
+						bannerImage: null,
+						linkUrl: '',
+						logoSize: 'small',
+						showCollaborationText: false
+					};
+				}
 
 				if (!$scope.$$phase) {
 					$scope.$apply();
@@ -205,6 +216,64 @@
 				$scope.$watch(function () {
 					return Settings.data;
 				}, $scope.formatSettingsAndSave, true);
+			};
+
+			Settings.addLogoImage = () => {
+				buildfire.imageLib.showDialog({}, (err, result) => {
+					if (err) return console.error(err);
+					if (result && result.selectedFiles && result.selectedFiles.length > 0) {
+						Settings.data.content.bottomLogo.logoImage = result.selectedFiles[0];
+						if (!$scope.$$phase) {
+							$scope.$apply();
+							$scope.$digest();
+						}
+					}
+				});
+			};
+
+			Settings.addBannerImage = () => {
+				buildfire.imageLib.showDialog({}, (err, result) => {
+					if (err) return console.error(err);
+					if (result && result.selectedFiles && result.selectedFiles.length > 0) {
+						Settings.data.content.bottomLogo.bannerImage = result.selectedFiles[0];
+						if (!$scope.$$phase) {
+							$scope.$apply();
+							$scope.$digest();
+						}
+					}
+				});
+			};
+
+			Settings.removeLogoImage = () => {
+				Settings.data.content.bottomLogo.logoImage = null;
+				if (!$scope.$$phase) {
+					$scope.$apply();
+					$scope.$digest();
+				}
+			};
+
+			Settings.removeBannerImage = () => {
+				Settings.data.content.bottomLogo.bannerImage = null;
+				if (!$scope.$$phase) {
+					$scope.$apply();
+					$scope.$digest();
+				}
+			};
+
+			Settings.removeBottomLogo = () => {
+				Settings.data.content.bottomLogo = {
+					enabled: false,
+					displayMode: 'logo',
+					logoImage: null,
+					bannerImage: null,
+					linkUrl: '',
+					logoSize: 'small',
+					showCollaborationText: false
+				};
+				if (!$scope.$$phase) {
+					$scope.$apply();
+					$scope.$digest();
+				}
 			};
 		}])
 		.filter('cropImg', function () {

@@ -1780,5 +1780,17 @@
                         });
                     });
                 };
+
+                WidgetHome.openBottomLogoLink = ($event) => {
+                    if ($event) {
+                        $event.preventDefault();
+                        $event.stopPropagation();
+                    }
+
+                    const bottomLogo = WidgetHome.media.data.content.bottomLogo;
+                    if (bottomLogo && bottomLogo.linkUrl) {
+                        buildfire.navigation.openWindow(bottomLogo.linkUrl, '_blank');
+                    }
+                };
             }]);
 })(window.angular);

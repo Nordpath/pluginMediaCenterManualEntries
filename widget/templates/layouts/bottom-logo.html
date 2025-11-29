@@ -1,0 +1,21 @@
+<div ng-if="(WidgetHome.media.data.content.bottomLogo || WidgetMedia.media.data.content.bottomLogo) && (((WidgetHome.media.data.content.bottomLogo || WidgetMedia.media.data.content.bottomLogo).displayMode === 'logo' && (WidgetHome.media.data.content.bottomLogo || WidgetMedia.media.data.content.bottomLogo).logoImage) || ((WidgetHome.media.data.content.bottomLogo || WidgetMedia.media.data.content.bottomLogo).displayMode === 'banner' && (WidgetHome.media.data.content.bottomLogo || WidgetMedia.media.data.content.bottomLogo).bannerImage && (WidgetHome.media.data.content.bottomLogo || WidgetMedia.media.data.content.bottomLogo).enabled))"
+     class="bottom-logo-container"
+     ng-class="{'logo-mode': (WidgetHome.media.data.content.bottomLogo || WidgetMedia.media.data.content.bottomLogo).displayMode === 'logo', 'banner-mode': (WidgetHome.media.data.content.bottomLogo || WidgetMedia.media.data.content.bottomLogo).displayMode === 'banner'}">
+
+    <div ng-if="(WidgetHome.media.data.content.bottomLogo || WidgetMedia.media.data.content.bottomLogo).displayMode === 'logo'"
+         class="bottom-logo-wrapper"
+         ng-class="{'size-small': (WidgetHome.media.data.content.bottomLogo || WidgetMedia.media.data.content.bottomLogo).logoSize === 'small', 'size-medium': (WidgetHome.media.data.content.bottomLogo || WidgetMedia.media.data.content.bottomLogo).logoSize === 'medium', 'size-large': (WidgetHome.media.data.content.bottomLogo || WidgetMedia.media.data.content.bottomLogo).logoSize === 'large'}"
+         ng-click="WidgetHome.openBottomLogoLink ? WidgetHome.openBottomLogoLink($event) : WidgetMedia.openBottomLogoLink($event)">
+
+        <div class="logo-content">
+            <span ng-if="(WidgetHome.media.data.content.bottomLogo || WidgetMedia.media.data.content.bottomLogo).showCollaborationText" class="collaboration-text">In collaboration with</span>
+            <img ng-src="{{(WidgetHome.media.data.content.bottomLogo || WidgetMedia.media.data.content.bottomLogo).logoImage}}" alt="Logo" class="bottom-logo-image">
+        </div>
+    </div>
+
+    <div ng-if="(WidgetHome.media.data.content.bottomLogo || WidgetMedia.media.data.content.bottomLogo).displayMode === 'banner'"
+         class="bottom-banner-wrapper"
+         ng-click="WidgetHome.openBottomLogoLink ? WidgetHome.openBottomLogoLink($event) : WidgetMedia.openBottomLogoLink($event)">
+        <img ng-src="{{(WidgetHome.media.data.content.bottomLogo || WidgetMedia.media.data.content.bottomLogo).bannerImage}}" alt="Banner" class="bottom-banner-image">
+    </div>
+</div>

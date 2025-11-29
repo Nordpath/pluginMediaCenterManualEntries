@@ -271,3 +271,110 @@
         <label for="enableIndicatePlayedItems" class="label-success"></label>
     </div>
 </div>
+
+<hr class="margin-bottom-twenty margin-top-twenty">
+
+<div class="row margin-bottom-twenty">
+    <div class="col-md-12">
+        <h4 class="margin-bottom-ten">Bottom Logo</h4>
+        <p class="info-note">Choose between a small logo or a full-width banner at the bottom of the widget.</p>
+    </div>
+</div>
+
+<div class="row margin-bottom-twenty flex flex-align-center">
+    <label class="tooltip-container col-md-4">Display Mode
+        <span class="btn-info-icon btn-primary">
+            <span class="cp-tooltip">
+                Logo: Small logo with optional text. Banner: Full-width clickable banner.
+            </span>
+        </span>
+    </label>
+    <div class="col-md-9 flex flex-justify-end">
+        <div class="btn-group">
+            <button class="btn" ng-class="{'btn-primary': Settings.data.content.bottomLogo.displayMode === 'logo', 'btn-default': Settings.data.content.bottomLogo.displayMode !== 'logo'}" ng-click="Settings.data.content.bottomLogo.displayMode = 'logo'">Logo Mode</button>
+            <button class="btn" ng-class="{'btn-primary': Settings.data.content.bottomLogo.displayMode === 'banner', 'btn-default': Settings.data.content.bottomLogo.displayMode !== 'banner'}" ng-click="Settings.data.content.bottomLogo.displayMode = 'banner'">Banner Mode</button>
+        </div>
+    </div>
+</div>
+
+<div ng-if="Settings.data.content.bottomLogo.displayMode === 'logo'">
+    <div class="row margin-bottom-twenty">
+        <label class="col-md-4">Logo Image</label>
+        <div class="col-md-9">
+            <div ng-if="Settings.data.content.bottomLogo.logoImage" class="margin-bottom-ten">
+                <img ng-src="{{Settings.data.content.bottomLogo.logoImage}}" style="max-width: 100px; max-height: 100px; display: block; margin-bottom: 10px;">
+                <button class="btn btn-danger btn-sm" ng-click="Settings.removeLogoImage()">Remove Logo</button>
+            </div>
+            <button ng-if="!Settings.data.content.bottomLogo.logoImage" class="btn btn-primary" ng-click="Settings.addLogoImage()">Upload Logo</button>
+        </div>
+    </div>
+
+    <div class="row margin-bottom-twenty">
+        <label class="col-md-4">Link URL</label>
+        <div class="col-md-9">
+            <input type="text" class="form-control" ng-model="Settings.data.content.bottomLogo.linkUrl" placeholder="https://example.com">
+            <p class="info-note margin-top-five">This URL will open in a webview when the logo is clicked</p>
+        </div>
+    </div>
+
+    <div class="row margin-bottom-twenty flex flex-align-center">
+        <label class="col-md-4">Logo Size</label>
+        <div class="col-md-9 flex flex-justify-end">
+            <select class="form-control" ng-model="Settings.data.content.bottomLogo.logoSize">
+                <option value="small">Small (35px)</option>
+                <option value="medium">Medium (50px)</option>
+                <option value="large">Large (70px)</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row margin-bottom-twenty flex flex-align-center">
+        <label class="tooltip-container col-md-4">Show "In collaboration with" text</label>
+        <div class="button-switch col-md-9 flex flex-justify-end">
+            <input id="showCollaborationText" type="checkbox" ng-model="Settings.data.content.bottomLogo.showCollaborationText">
+            <label for="showCollaborationText" class="label-success"></label>
+        </div>
+    </div>
+</div>
+
+<div ng-if="Settings.data.content.bottomLogo.displayMode === 'banner'">
+    <div class="row margin-bottom-twenty">
+        <label class="col-md-4">Banner Image</label>
+        <div class="col-md-9">
+            <div ng-if="Settings.data.content.bottomLogo.bannerImage" class="margin-bottom-ten">
+                <img ng-src="{{Settings.data.content.bottomLogo.bannerImage}}" style="max-width: 100%; max-height: 150px; display: block; margin-bottom: 10px;">
+                <button class="btn btn-danger btn-sm" ng-click="Settings.removeBannerImage()">Remove Banner</button>
+            </div>
+            <button ng-if="!Settings.data.content.bottomLogo.bannerImage" class="btn btn-primary" ng-click="Settings.addBannerImage()">Upload Banner</button>
+            <p class="info-note margin-top-five">Recommended: Wide banner images (e.g., 1200x200px or similar aspect ratio)</p>
+        </div>
+    </div>
+
+    <div class="row margin-bottom-twenty">
+        <label class="col-md-4">Link URL</label>
+        <div class="col-md-9">
+            <input type="text" class="form-control" ng-model="Settings.data.content.bottomLogo.linkUrl" placeholder="https://example.com">
+            <p class="info-note margin-top-five">This URL will open when the banner is clicked</p>
+        </div>
+    </div>
+
+    <div class="row margin-bottom-twenty flex flex-align-center">
+        <label class="tooltip-container col-md-4">Enable Banner Display
+            <span class="btn-info-icon btn-primary">
+                <span class="cp-tooltip">
+                    Toggle banner visibility in the widget
+                </span>
+            </span>
+        </label>
+        <div class="button-switch col-md-9 flex flex-justify-end">
+            <input id="enableBannerDisplay" type="checkbox" ng-model="Settings.data.content.bottomLogo.enabled">
+            <label for="enableBannerDisplay" class="label-success"></label>
+        </div>
+    </div>
+</div>
+
+<div class="row margin-bottom-twenty">
+    <div class="col-md-12 flex flex-justify-end">
+        <button class="btn btn-danger" ng-click="Settings.removeBottomLogo()">Remove Configuration</button>
+    </div>
+</div>
