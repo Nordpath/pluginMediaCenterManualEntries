@@ -39,18 +39,25 @@
                           updateImageLoadedState(false);
                           return;
                       }
-                      
+
                       var options = {};
                       if (attrs.cropWidth) options.width = attrs.cropWidth;
                       if (attrs.cropHeight) options.height = attrs.cropHeight;
-                      
-                      var processImage = attrs.cropType === 'resize' ? Buildfire.imageLib.local.resizeImage : Buildfire.imageLib.local.cropImage;
-                      
+
+                      var processImage;
+                      if (attrs.cropType === 'resize') {
+                          processImage = Buildfire.imageLib.local.resizeImage;
+                      } else if (attrs.cropType === 'fit') {
+                          processImage = Buildfire.imageLib.local.resizeImage;
+                      } else {
+                          processImage = Buildfire.imageLib.local.cropImage;
+                      }
+
                       updateImageLoadedState(false);
-                      
+
                       processImage(_img, options, function (err, imgUrl) {
                           var finalSrc = err ? _img : imgUrl;
-                          
+
                           var img = new Image();
                           img.onload = function () {
                                  scope.$evalAsync(function () {
