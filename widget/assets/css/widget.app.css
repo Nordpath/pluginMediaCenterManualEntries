@@ -1543,15 +1543,12 @@ input[type="checkbox"]:checked+.subcategory-label.minus::before {
 
 .list-layout-3 .list-3-image {
     border-radius: 8px;
-    object-fit: contain !important;
-    height: 240px;
-    background-color: #000;
+    object-fit: cover !important;
 }
 
 .list-layout-3 .image-placeholder {
     border-radius: 8px;
     overflow: hidden;
-    height: 240px;
 }
 
 .playList-icon{
