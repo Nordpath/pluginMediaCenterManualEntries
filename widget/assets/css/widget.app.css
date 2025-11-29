@@ -1677,6 +1677,219 @@ input[type="checkbox"]:checked+.subcategory-label.minus::before {
     fill: currentColor;
 }
 
+/* Responsive Design for List Layout 3 - Mobile Optimization */
+
+/* iPhone SE and small phones (320px - 375px) */
+@media only screen and (max-width: 375px) {
+    .list-layout-3 .widget-home-items-container {
+        gap: 16px;
+        padding: 0 8px;
+    }
+
+    .list-layout-3 .list-3-content {
+        padding: 10px 12px;
+    }
+
+    .list-layout-3 .list-3-image {
+        border-radius: 6px;
+    }
+
+    .list-layout-3 .list-3-title {
+        font-size: 13px;
+    }
+
+    .list-layout-3 .list-3-summary p {
+        font-size: 12px;
+    }
+
+    .list-layout-3 .list-3-engagement {
+        gap: 18px;
+        margin-top: 10px;
+        padding-top: 10px;
+    }
+
+    .list-layout-3 .engagement-item {
+        gap: 4px;
+    }
+
+    .list-layout-3 .engagement-item svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .list-layout-3 .engagement-item span {
+        font-size: 13px;
+    }
+
+    /* Banner responsive adjustments */
+    .list-layout-3 .plugin-banner {
+        min-height: 60px;
+        max-height: 100px;
+    }
+
+    .list-layout-3 .plugin-banner img {
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+/* Standard phones (376px - 414px) - iPhone 12/13/14 */
+@media only screen and (min-width: 376px) and (max-width: 414px) {
+    .list-layout-3 .widget-home-items-container {
+        gap: 18px;
+        padding: 0 12px;
+    }
+
+    .list-layout-3 .list-3-content {
+        padding: 12px 14px;
+    }
+
+    /* Banner responsive adjustments */
+    .list-layout-3 .plugin-banner {
+        min-height: 70px;
+        max-height: 120px;
+    }
+}
+
+/* Large phones (415px - 767px) - iPhone Pro Max, Android */
+@media only screen and (min-width: 415px) and (max-width: 767px) {
+    .list-layout-3 .widget-home-items-container {
+        gap: 20px;
+        padding: 0 16px;
+    }
+
+    /* Banner responsive adjustments */
+    .list-layout-3 .plugin-banner {
+        min-height: 80px;
+        max-height: 140px;
+    }
+}
+
+/* Tablets (768px and up) - iPad */
+@media only screen and (min-width: 768px) {
+    .list-layout-3 .widget-home-items-container {
+        gap: 24px;
+        padding: 0 20px;
+        max-width: 640px;
+        margin: 0 auto;
+    }
+
+    .list-layout-3 .list-3-content {
+        padding: 14px 18px;
+    }
+
+    .list-layout-3 .list-3-title {
+        font-size: 15px;
+    }
+
+    .list-layout-3 .list-3-summary p {
+        font-size: 14px;
+    }
+
+    .list-layout-3 .engagement-item svg {
+        width: 22px;
+        height: 22px;
+    }
+
+    .list-layout-3 .engagement-item span {
+        font-size: 15px;
+    }
+
+    /* Banner responsive adjustments */
+    .list-layout-3 .plugin-banner {
+        min-height: 100px;
+        max-height: 180px;
+    }
+}
+
+/* Landscape mode optimizations for phones */
+@media only screen and (max-width: 896px) and (orientation: landscape) {
+    .list-layout-3 .widget-home-items-container {
+        gap: 12px;
+    }
+
+    .list-layout-3 .list-3-content {
+        padding: 8px 12px;
+    }
+
+    .list-layout-3 .list-3-engagement {
+        gap: 20px;
+        margin-top: 8px;
+        padding-top: 8px;
+    }
+
+    /* Reduce banner height in landscape */
+    .list-layout-3 .plugin-banner {
+        min-height: 50px;
+        max-height: 80px;
+    }
+
+    /* Compact spacing for landscape */
+    .list-layout-3 .list-3-title {
+        font-size: 13px;
+        line-height: 1.3;
+    }
+
+    .list-layout-3 .list-3-summary {
+        margin-bottom: 6px;
+    }
+
+    .list-layout-3 .list-3-views {
+        margin: 0 0 4px 0;
+    }
+}
+
+/* Safe area for notched devices (iPhone X and newer) */
+@supports (padding-top: env(safe-area-inset-top)) {
+    .list-layout-3 .widget-home-items-container {
+        padding-left: max(12px, env(safe-area-inset-left));
+        padding-right: max(12px, env(safe-area-inset-right));
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    /* Extra padding when global playlist is visible */
+    .list-layout-3.pb75 .widget-home-items-container {
+        padding-bottom: calc(75px + env(safe-area-inset-bottom));
+    }
+}
+
+/* Android gesture navigation safe area */
+@media only screen and (max-width: 767px) {
+    .list-layout-3 .widget-home-items-container {
+        padding-bottom: 20px;
+    }
+
+    /* Extra padding when FAB or bottom nav is visible */
+    .list-layout-3.pb75 .widget-home-items-container {
+        padding-bottom: 95px;
+    }
+}
+
+/* High resolution displays */
+@media only screen and (-webkit-min-device-pixel-ratio: 2),
+       only screen and (min-resolution: 192dpi) {
+    .list-layout-3 .list-3-image {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+    .list-layout-3 .engagement-item,
+    .list-layout-3 .engagement-item svg {
+        transition: none;
+    }
+}
+
+/* Dark mode support (if theme provides dark colors) */
+@media (prefers-color-scheme: dark) {
+    .list-layout-3 .list-3-engagement {
+        border-top-color: rgba(255, 255, 255, 0.1);
+    }
+}
+
 .playList-icon{
     filter: unset !important;
 }
