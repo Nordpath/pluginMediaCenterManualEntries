@@ -5,7 +5,7 @@
                 <div class="people-holder clearfix">
                     <div class="people-media text-center">
                         <div ng-if="!WidgetMedia.fullScreen" class="people-banner" ng-hide="WidgetMedia.showVideo"
-                        style="background:url('{{WidgetMedia.item.data.topImage ? resizeImg(WidgetMedia.item.data.topImage) : WidgetMedia.emptyBG}}') no-repeat; background-position:center center; background-size:cover !important;height: {{(WidgetMedia.deviceWidth*9)/16+'px'}} !important; position: relative;">
+                        style="background:url('{{WidgetMedia.item.data.topImage ? resizeImg(WidgetMedia.item.data.topImage) : WidgetMedia.emptyBG}}') no-repeat; background-position:center center; background-size:cover !important; height: {{(WidgetMedia.deviceWidth*9)/16+'px'}} !important; position: relative; border-radius: 8px; overflow: hidden;">
                             <div class="item-overlay-text item-overlay-item2" id="itemOverlayText2">
                                 <h2 class="overlay-title" id="overlayTitle2">{{WidgetMedia.item.data.title}}</h2>
                                 <p class="overlay-date" id="overlayDate2" ng-if="WidgetMedia.item.data.dateCreated">{{WidgetMedia.item.data.dateCreated | date:'MMM d, yyyy'}}</p>

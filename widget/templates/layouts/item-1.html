@@ -17,7 +17,7 @@
                     </div>
                     <img ng-show="!WidgetMedia.fullScreen && WidgetMedia.item.imageLoaded"
                         ng-hide="WidgetMedia.showVideo || !WidgetMedia.item.data.topImage || ( skipMediaPage && WidgetMedia.item.data.videoUrl )"
-                        load-image="16x9" style="width:100%; max-height: {{(WidgetMedia.deviceWidth*9)/16+'px'}} !important; object-fit: contain; background-color: #000; border-radius: 8px;"
+                        load-image="16x9" style="width:100%; height: {{(WidgetMedia.deviceWidth*9)/16+'px'}} !important; max-height: {{(WidgetMedia.deviceWidth*9)/16+'px'}} !important; object-fit: cover; border-radius: 8px;"
                         crop-width="640" crop-height="360" crop-type="fit" title="{{WidgetMedia.item.data.title}} top image" aria-label="{{WidgetMedia.item.data.title}} top image"
                         data-final-src="{{WidgetMedia.item.data.topImage }}" image-item="WidgetMedia.item" alt="{{WidgetMedia.item.data.title}} top image"/>
                     <div ng-if="!WidgetMedia.fullScreen && !WidgetMedia.showVideo" class="item-overlay-text" id="itemOverlayText">
