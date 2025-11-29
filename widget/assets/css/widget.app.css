@@ -1664,6 +1664,16 @@ input[type="checkbox"]:checked+.subcategory-label.minus::before {
     font-weight: 500;
 }
 
+.list-layout-3 .list-3-report-menu {
+    margin-left: auto;
+}
+
+.list-layout-3 .list-3-report-menu svg {
+    width: 18px;
+    height: 18px;
+    transform: rotate(90deg);
+}
+
 .list-layout-3 .engagement-item:first-child.liked {
     color: #e74c3c;
 }

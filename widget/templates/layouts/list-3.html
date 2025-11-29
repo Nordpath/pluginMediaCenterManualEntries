@@ -66,8 +66,6 @@
                                 <div></div>
                                 <div></div>
                             </div>
-                            <i class="glyphicon glyphicon-option-horizontal" aria-label="{{item.data.title}} media item options"
-                                ng-click="WidgetHome.showDrawer($event, item)" role="button" tabindex="0"></i>
                         </div>
                     </div>
                     <div data-ng-if="item.data.summary" class="list-3-summary">
@@ -111,6 +109,13 @@
                                 <line x1="12" y1="2" x2="12" y2="15"></line>
                             </svg>
                             <span>Share</span>
+                        </div>
+                        <div class="engagement-item list-3-report-menu" ng-click="WidgetHome.reportPost($event, item)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="1"></circle>
+                                <circle cx="12" cy="5" r="1"></circle>
+                                <circle cx="12" cy="19" r="1"></circle>
+                            </svg>
                         </div>
                     </div>
                 </div>

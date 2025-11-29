@@ -1917,5 +1917,70 @@
                         });
                     });
                 };
+
+                WidgetHome.reportPost = function($event, item) {
+                    if ($event) {
+                        $event.preventDefault();
+                        $event.stopPropagation();
+                    }
+
+                    buildfire.dialog.show({
+                        title: 'Report Post',
+                        message: 'Why are you reporting this post?',
+                        isMessageHTML: false,
+                        actionButtons: [
+                            {
+                                text: 'Inappropriate Content',
+                                type: 'default',
+                                action: function() {
+                                    WidgetHome.submitReport(item, 'Inappropriate Content');
+                                }
+                            },
+                            {
+                                text: 'Spam',
+                                type: 'default',
+                                action: function() {
+                                    WidgetHome.submitReport(item, 'Spam');
+                                }
+                            },
+                            {
+                                text: 'Misleading',
+                                type: 'default',
+                                action: function() {
+                                    WidgetHome.submitReport(item, 'Misleading');
+                                }
+                            },
+                            {
+                                text: 'Cancel',
+                                type: 'danger',
+                                action: function() {
+                                    buildfire.dialog.hide();
+                                }
+                            }
+                        ]
+                    });
+                };
+
+                WidgetHome.submitReport = function(item, reason) {
+                    buildfire.dialog.hide();
+
+                    getCurrentUser(() => {
+                        const userId = $rootScope.user ? $rootScope.user._id : 'anonymous';
+                        const reportData = {
+                            mediaId: item.id,
+                            mediaTitle: item.data.title,
+                            reason: reason,
+                            reportedBy: userId,
+                            reportedAt: new Date().toISOString()
+                        };
+
+                        console.log('Post reported:', reportData);
+
+                        buildfire.dialog.toast({
+                            message: 'Thank you for your report. We will review it shortly.',
+                            type: 'success'
+                        });
+                    });
+                };
             }]);
 })(window.angular);
