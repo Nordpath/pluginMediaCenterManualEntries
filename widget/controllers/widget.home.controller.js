@@ -1857,7 +1857,16 @@
                     buildfire.dialog.show({
                         title: 'Comments',
                         message: 'Comment functionality coming soon!',
-                        isMessageHTML: false
+                        isMessageHTML: false,
+                        actionButtons: [
+                            {
+                                text: 'OK',
+                                type: 'primary',
+                                action: function() {
+                                    buildfire.dialog.hide();
+                                }
+                            }
+                        ]
                     });
                 };
 
