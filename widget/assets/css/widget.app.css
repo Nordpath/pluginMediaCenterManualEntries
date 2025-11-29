@@ -1541,6 +1541,15 @@ input[type="checkbox"]:checked+.subcategory-label.minus::before {
     align-items: flex-start;
 }
 
+.list-layout-3 .list-3-image {
+    border-radius: 8px;
+}
+
+.list-layout-3 .image-placeholder {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
 .playList-icon{
     filter: unset !important;
 }
