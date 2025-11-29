@@ -1537,20 +1537,100 @@ input[type="checkbox"]:checked+.subcategory-label.minus::before {
     min-height: 20px;
 }
 
-.list-layout-3 .date-container{
-    align-items: flex-start;
+.list-layout-3 .widget-home-items-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 0;
+}
+
+.list-layout-3 .list-3-item {
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
 }
 
 .list-layout-3 .list-3-image {
+    width: 100%;
+    height: auto;
+    display: block;
     border-radius: 8px;
-    object-fit: none !important;
-    height: auto !important;
-    width: 100% !important;
+    object-fit: contain;
 }
 
-.list-layout-3 .image-placeholder {
-    border-radius: 8px;
-    overflow: hidden;
+.list-layout-3 .list-3-content {
+    padding: 12px 16px;
+    background: transparent;
+}
+
+.list-layout-3 .list-3-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.list-layout-3 .list-3-title {
+    flex: 1;
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--bf-theme-bodyText, #000);
+    line-height: 1.4;
+}
+
+.list-layout-3 .list-3-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.list-layout-3 .list-3-actions i {
+    font-size: 16px;
+    color: var(--bf-theme-icons, #666);
+}
+
+.list-layout-3 .list-3-summary {
+    margin-bottom: 8px;
+}
+
+.list-layout-3 .list-3-summary p {
+    margin: 0;
+    font-size: 13px;
+    color: var(--bf-theme-bodyText, #666);
+    line-height: 1.4;
+}
+
+.list-layout-3 .list-3-views {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin: 0 0 6px 0;
+    font-size: 12px;
+    color: var(--bf-theme-bodyText, #666);
+}
+
+.list-layout-3 .list-3-views i {
+    font-size: 14px;
+}
+
+.list-layout-3 .list-3-date {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 20px;
+}
+
+.list-layout-3 .list-3-date .list-item-date {
+    font-size: 11px;
+    font-style: italic;
+    color: var(--bf-theme-bodyText, #999);
 }
 
 .playList-icon{
