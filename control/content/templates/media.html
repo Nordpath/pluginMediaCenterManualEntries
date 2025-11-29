@@ -89,11 +89,12 @@
             <div class="screens clearfix margin-bottom-zero">
                 <div class="screen pull-left">
                     <a class="border-grey border-radius-four default-background-hover"
-                        style="width: 122px; height: 69px; display: flex; align-items: center; justify-content: center;"
+                        style="width: 122px; height: 163px; display: flex; align-items: center; justify-content: center; border-radius: 8px; overflow: hidden;"
                         ng-click="ContentMedia.addListImage()">
                         <span ng-if="!ContentMedia.item.data.topImage" class="add-icon" style="height: 85%;">+</span>
                         <img ng-if="ContentMedia.item.data.topImage"
-                            ng-src="{{ContentMedia.item.data.topImage | cropImage : 122:69}}">
+                            ng-src="{{ContentMedia.item.data.topImage | cropImage : 122:163}}"
+                            style="border-radius: 8px;">
                     </a>
                     <span ng-if="ContentMedia.item.data.topImage"
                         class="icon btn-delete-icon btn-danger transition-third"
