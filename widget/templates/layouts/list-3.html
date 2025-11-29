@@ -48,7 +48,7 @@
                     <div class="text-overlay" aria-hidden="true"
                         play-btn="{{item.data.videoUrl.length > 0 || item.data.audioUrl.length > 0 }}">
                         <img ng-show="item.data.topImage && item.imageLoaded" alt="{{item.data.title}}" class="load-image-hidden list-3-image" aria-hidden="true"
-                             style="width:100%; border-radius: 8px; height: auto;" image-item="item"
+                             load-image style="width:100%; border-radius: 8px; height: auto;" image-item="item"
                              data-final-src="{{item.data.topImage}}" tabindex="0">
                         <img alt="{{item.data.title}}" aria-hidden="true" ng-if="!item.data.topImage" src="../../../styles/media/holder-16x9.png"
                             style="width:100%; border-radius: 8px;">
