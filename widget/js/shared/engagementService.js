@@ -1,125 +1,153 @@
 (function (window) {
     'use strict';
 
-    const SUPABASE_URL = 'https://agjwwnxduleyfxemvboj.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFnand3bnhkdWxleWZ4ZW12Ym9qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ0NDIwNzEsImV4cCI6MjA4MDAxODA3MX0.5PHwxzVoWUFlPyqxb1ouS-iA1TuijYOzkFUvdfDcxlI';
-
-    let supabaseClient = null;
-
-    function getSupabase() {
-        if (!supabaseClient && window.supabase) {
-            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        }
-        return supabaseClient;
-    }
+    var ENGAGEMENT_COLLECTION = 'MediaEngagement';
 
     window.EngagementService = {
-        async getLikeCount(mediaId) {
-            try {
-                const sb = getSupabase();
-                if (!sb) return 0;
+        getLikeCount: function(mediaId, callback) {
+            var filter = {
+                filter: {
+                    "_buildfire.index.string1": "like-" + mediaId
+                },
+                recordCount: true
+            };
 
-                const { count, error } = await sb
-                    .from('media_likes')
-                    .select('*', { count: 'exact', head: true })
-                    .eq('media_id', mediaId);
-
-                if (error) throw error;
-                return count || 0;
-            } catch (err) {
-                console.error('Error getting like count:', err);
-                return 0;
-            }
-        },
-
-        async getCommentCount(mediaId) {
-            try {
-                const sb = getSupabase();
-                if (!sb) return 0;
-
-                const { count, error } = await sb
-                    .from('media_comments')
-                    .select('*', { count: 'exact', head: true })
-                    .eq('media_id', mediaId);
-
-                if (error) throw error;
-                return count || 0;
-            } catch (err) {
-                console.error('Error getting comment count:', err);
-                return 0;
-            }
-        },
-
-        async isLikedByUser(mediaId, userId) {
-            try {
-                const sb = getSupabase();
-                if (!sb || !userId) return false;
-
-                const { data, error } = await sb
-                    .from('media_likes')
-                    .select('id')
-                    .eq('media_id', mediaId)
-                    .eq('user_id', userId)
-                    .maybeSingle();
-
-                if (error) throw error;
-                return !!data;
-            } catch (err) {
-                console.error('Error checking like status:', err);
-                return false;
-            }
-        },
-
-        async toggleLike(mediaId, userId) {
-            try {
-                const sb = getSupabase();
-                if (!sb || !userId) return { liked: false, count: 0 };
-
-                const isLiked = await this.isLikedByUser(mediaId, userId);
-
-                if (isLiked) {
-                    const { error } = await sb
-                        .from('media_likes')
-                        .delete()
-                        .eq('media_id', mediaId)
-                        .eq('user_id', userId);
-
-                    if (error) throw error;
+            buildfire.publicData.search(filter, ENGAGEMENT_COLLECTION, function(err, result) {
+                if (err) {
+                    console.error('Error getting like count:', err);
+                    callback(0);
                 } else {
-                    const { error } = await sb
-                        .from('media_likes')
-                        .insert({
-                            media_id: mediaId,
-                            user_id: userId
-                        });
-
-                    if (error) throw error;
+                    callback(result.totalRecord || 0);
                 }
-
-                const count = await this.getLikeCount(mediaId);
-                return { liked: !isLiked, count: count };
-            } catch (err) {
-                console.error('Error toggling like:', err);
-                return { liked: false, count: 0 };
-            }
+            });
         },
 
-        async recordShare(mediaId, userId) {
-            try {
-                const sb = getSupabase();
-                if (!sb || !userId) return;
+        getCommentCount: function(mediaId, callback) {
+            var filter = {
+                filter: {
+                    "_buildfire.index.string1": "comment-" + mediaId
+                },
+                recordCount: true
+            };
 
-                const { error } = await sb
-                    .from('media_shares')
-                    .insert({
-                        media_id: mediaId,
-                        user_id: userId
+            buildfire.publicData.search(filter, ENGAGEMENT_COLLECTION, function(err, result) {
+                if (err) {
+                    console.error('Error getting comment count:', err);
+                    callback(0);
+                } else {
+                    callback(result.totalRecord || 0);
+                }
+            });
+        },
+
+        isLikedByUser: function(mediaId, userId, callback) {
+            var filter = {
+                filter: {
+                    "_buildfire.index.array1.string1": "like-" + mediaId + "-" + userId
+                }
+            };
+
+            buildfire.publicData.search(filter, ENGAGEMENT_COLLECTION, function(err, result) {
+                if (err) {
+                    console.error('Error checking like status:', err);
+                    callback(false, null);
+                } else {
+                    callback(result && result.length > 0, result && result.length > 0 ? result[0] : null);
+                }
+            });
+        },
+
+        toggleLike: function(mediaId, userId, callback) {
+            var self = this;
+
+            this.isLikedByUser(mediaId, userId, function(isLiked, existingRecord) {
+                if (isLiked && existingRecord) {
+                    buildfire.publicData.delete(existingRecord.id, ENGAGEMENT_COLLECTION, function(err) {
+                        if (err) {
+                            console.error('Error removing like:', err);
+                            callback({ liked: false, count: 0 });
+                        } else {
+                            self.getLikeCount(mediaId, function(count) {
+                                callback({ liked: false, count: count });
+                            });
+                        }
                     });
+                } else {
+                    var likeData = {
+                        type: 'like',
+                        mediaId: mediaId,
+                        userId: userId,
+                        createdAt: new Date().toISOString(),
+                        _buildfire: {
+                            index: {
+                                string1: "like-" + mediaId,
+                                array1: [
+                                    { string1: "like-" + mediaId + "-" + userId }
+                                ]
+                            }
+                        }
+                    };
 
-                if (error) throw error;
-            } catch (err) {
-                console.error('Error recording share:', err);
-            }
+                    buildfire.publicData.insert(likeData, ENGAGEMENT_COLLECTION, false, function(err, result) {
+                        if (err) {
+                            console.error('Error adding like:', err);
+                            callback({ liked: false, count: 0 });
+                        } else {
+                            self.getLikeCount(mediaId, function(count) {
+                                callback({ liked: true, count: count });
+                            });
+                        }
+                    });
+                }
+            });
+        },
+
+        recordShare: function(mediaId, userId, callback) {
+            var shareData = {
+                type: 'share',
+                mediaId: mediaId,
+                userId: userId,
+                createdAt: new Date().toISOString(),
+                _buildfire: {
+                    index: {
+                        string1: "share-" + mediaId,
+                        array1: [
+                            { string1: "share-" + mediaId + "-" + userId }
+                        ]
+                    }
+                }
+            };
+
+            buildfire.publicData.insert(shareData, ENGAGEMENT_COLLECTION, false, function(err) {
+                if (err) {
+                    console.error('Error recording share:', err);
+                }
+                if (callback) callback(err);
+            });
+        },
+
+        recordComment: function(mediaId, userId, callback) {
+            var commentData = {
+                type: 'comment',
+                mediaId: mediaId,
+                userId: userId,
+                createdAt: new Date().toISOString(),
+                _buildfire: {
+                    index: {
+                        string1: "comment-" + mediaId,
+                        array1: [
+                            { string1: "comment-" + mediaId + "-" + userId }
+                        ]
+                    }
+                }
+            };
+
+            buildfire.publicData.insert(commentData, ENGAGEMENT_COLLECTION, false, function(err) {
+                if (err) {
+                    console.error('Error recording comment:', err);
+                }
+                if (callback) callback(err);
+            });
         }
     };
 

@@ -784,12 +784,12 @@
                 WidgetMedia.commentCount = 0;
 
                 if (WidgetMedia.item && WidgetMedia.item.id && window.EngagementService) {
-                    window.EngagementService.getLikeCount(WidgetMedia.item.id).then(function(count) {
+                    window.EngagementService.getLikeCount(WidgetMedia.item.id, function(count) {
                         WidgetMedia.likeCount = count;
                         if (!$scope.$$phase) $scope.$apply();
                     });
 
-                    window.EngagementService.getCommentCount(WidgetMedia.item.id).then(function(count) {
+                    window.EngagementService.getCommentCount(WidgetMedia.item.id, function(count) {
                         WidgetMedia.commentCount = count;
                         if (!$scope.$$phase) $scope.$apply();
                     });
@@ -799,7 +799,7 @@
                     WidgetMedia.bookmark();
 
                     if (window.EngagementService && WidgetMedia.item && WidgetMedia.item.id && $rootScope.user && $rootScope.user._id) {
-                        window.EngagementService.toggleLike(WidgetMedia.item.id, $rootScope.user._id).then(function(result) {
+                        window.EngagementService.toggleLike(WidgetMedia.item.id, $rootScope.user._id, function(result) {
                             WidgetMedia.likeCount = result.count;
                             if (!$scope.$$phase) $scope.$apply();
                         });
@@ -808,6 +808,15 @@
 
                 WidgetMedia.openComments = function () {
                     WidgetMedia.addNote();
+
+                    if (window.EngagementService && WidgetMedia.item && WidgetMedia.item.id && $rootScope.user && $rootScope.user._id) {
+                        window.EngagementService.recordComment(WidgetMedia.item.id, $rootScope.user._id, function() {
+                            window.EngagementService.getCommentCount(WidgetMedia.item.id, function(count) {
+                                WidgetMedia.commentCount = count;
+                                if (!$scope.$$phase) $scope.$apply();
+                            });
+                        });
+                    }
                 };
 
                 WidgetMedia.addToPlaylist = function () {
