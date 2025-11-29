@@ -1633,6 +1633,50 @@ input[type="checkbox"]:checked+.subcategory-label.minus::before {
     color: var(--bf-theme-bodyText, #999);
 }
 
+.list-layout-3 .list-3-engagement {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.list-layout-3 .engagement-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    color: var(--bf-theme-bodyText, #666);
+    transition: color 0.2s ease;
+}
+
+.list-layout-3 .engagement-item:hover {
+    color: var(--bf-theme-primary, #007bff);
+}
+
+.list-layout-3 .engagement-item svg {
+    flex-shrink: 0;
+}
+
+.list-layout-3 .engagement-item span {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.list-layout-3 .engagement-item:first-child.liked {
+    color: #e74c3c;
+}
+
+.list-layout-3 .engagement-item:first-child svg {
+    stroke: currentColor;
+    transition: all 0.2s ease;
+}
+
+.list-layout-3 .engagement-item:first-child.liked svg {
+    fill: currentColor;
+}
+
 .playList-icon{
     filter: unset !important;
 }

@@ -1107,6 +1107,7 @@
                                 if (!WidgetHome.items.length) {
                                     angular.element('#emptyContainer').css('display', 'block');
                                 }
+                                WidgetHome.loadEngagementForItems();
                             };
 
                             if (result.length < searchOptions.limit) {
@@ -1791,6 +1792,101 @@
                     if (bottomLogo && bottomLogo.linkUrl) {
                         buildfire.navigation.openWindow(bottomLogo.linkUrl, '_blank');
                     }
+                };
+
+                WidgetHome.loadEngagementForItems = function() {
+                    if (!WidgetHome.items || !WidgetHome.items.length) return;
+
+                    getCurrentUser(() => {
+                        const userId = $rootScope.user ? $rootScope.user._id : null;
+
+                        WidgetHome.items.forEach(function(item) {
+                            if (window.EngagementService) {
+                                window.EngagementService.loadEngagementData(item.id, userId, function(data) {
+                                    item.likeCount = data.likeCount;
+                                    item.commentCount = data.commentCount;
+                                    item.isLiked = data.isLiked;
+
+                                    if (!$scope.$$phase) {
+                                        $scope.$apply();
+                                    }
+                                });
+                            }
+                        });
+                    });
+                };
+
+                WidgetHome.toggleLike = function($event, item) {
+                    if ($event) {
+                        $event.preventDefault();
+                        $event.stopPropagation();
+                    }
+
+                    getCurrentUser(() => {
+                        if (!$rootScope.user) {
+                            buildfire.auth.login({}, function(err, user) {
+                                if (!err && user) {
+                                    $rootScope.user = user;
+                                    WidgetHome.toggleLike(null, item);
+                                }
+                            });
+                            return;
+                        }
+
+                        const userId = $rootScope.user._id;
+
+                        if (window.EngagementService) {
+                            window.EngagementService.toggleLike(item.id, userId, function(result) {
+                                item.isLiked = result.liked;
+                                item.likeCount = result.count;
+
+                                if (!$scope.$$phase) {
+                                    $scope.$apply();
+                                }
+                            });
+                        }
+                    });
+                };
+
+                WidgetHome.showComments = function($event, item) {
+                    if ($event) {
+                        $event.preventDefault();
+                        $event.stopPropagation();
+                    }
+
+                    buildfire.dialog.show({
+                        title: 'Comments',
+                        message: 'Comment functionality coming soon!',
+                        isMessageHTML: false
+                    });
+                };
+
+                WidgetHome.shareMedia = function($event, item) {
+                    if ($event) {
+                        $event.preventDefault();
+                        $event.stopPropagation();
+                    }
+
+                    getCurrentUser(() => {
+                        const userId = $rootScope.user ? $rootScope.user._id : 'anonymous';
+
+                        if (window.EngagementService) {
+                            window.EngagementService.recordShare(item.id, userId, function(err) {
+                                if (!err) {
+                                    console.log('Share recorded');
+                                }
+                            });
+                        }
+
+                        buildfire.actionItems.execute(
+                            {
+                                title: item.data.title,
+                                description: item.data.summary || '',
+                                url: item.data.topImage || ''
+                            },
+                            function() {}
+                        );
+                    });
                 };
             }]);
 })(window.angular);

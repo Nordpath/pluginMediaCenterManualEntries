@@ -1,60 +1,72 @@
 (function (window) {
     'use strict';
 
-    var ENGAGEMENT_COLLECTION = 'MediaEngagement';
+    var supabaseUrl = 'https://agjwwnxduleyfxemvboj.supabase.co';
+    var supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFnand3bnhkdWxleWZ4ZW12Ym9qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ0NDIwNzEsImV4cCI6MjA4MDAxODA3MX0.5PHwxzVoWUFlPyqxb1ouS-iA1TuijYOzkFUvdfDcxlI';
+
+    var supabase = window.supabase ? window.supabase.createClient(supabaseUrl, supabaseKey) : null;
 
     window.EngagementService = {
         getLikeCount: function(mediaId, callback) {
-            var filter = {
-                filter: {
-                    "_buildfire.index.string1": "like-" + mediaId
-                },
-                recordCount: true
-            };
+            if (!supabase) {
+                console.warn('Supabase not available');
+                callback(0);
+                return;
+            }
 
-            buildfire.publicData.search(filter, ENGAGEMENT_COLLECTION, function(err, result) {
-                if (err) {
+            supabase
+                .from('media_likes')
+                .select('*', { count: 'exact', head: true })
+                .eq('media_id', mediaId)
+                .then(function(response) {
+                    callback(response.count || 0);
+                })
+                .catch(function(err) {
                     console.error('Error getting like count:', err);
                     callback(0);
-                } else {
-                    callback(result.totalRecord || 0);
-                }
-            });
+                });
         },
 
         getCommentCount: function(mediaId, callback) {
-            var filter = {
-                filter: {
-                    "_buildfire.index.string1": "comment-" + mediaId
-                },
-                recordCount: true
-            };
+            if (!supabase) {
+                console.warn('Supabase not available');
+                callback(0);
+                return;
+            }
 
-            buildfire.publicData.search(filter, ENGAGEMENT_COLLECTION, function(err, result) {
-                if (err) {
+            supabase
+                .from('media_comments')
+                .select('*', { count: 'exact', head: true })
+                .eq('media_id', mediaId)
+                .then(function(response) {
+                    callback(response.count || 0);
+                })
+                .catch(function(err) {
                     console.error('Error getting comment count:', err);
                     callback(0);
-                } else {
-                    callback(result.totalRecord || 0);
-                }
-            });
+                });
         },
 
         isLikedByUser: function(mediaId, userId, callback) {
-            var filter = {
-                filter: {
-                    "_buildfire.index.array1.string1": "like-" + mediaId + "-" + userId
-                }
-            };
+            if (!supabase) {
+                console.warn('Supabase not available');
+                callback(false, null);
+                return;
+            }
 
-            buildfire.publicData.search(filter, ENGAGEMENT_COLLECTION, function(err, result) {
-                if (err) {
+            supabase
+                .from('media_likes')
+                .select('*')
+                .eq('media_id', mediaId)
+                .eq('user_id', userId)
+                .maybeSingle()
+                .then(function(response) {
+                    callback(!!response.data, response.data);
+                })
+                .catch(function(err) {
                     console.error('Error checking like status:', err);
                     callback(false, null);
-                } else {
-                    callback(result && result.length > 0, result && result.length > 0 ? result[0] : null);
-                }
-            });
+                });
         },
 
         toggleLike: function(mediaId, userId, callback) {
@@ -62,91 +74,128 @@
 
             this.isLikedByUser(mediaId, userId, function(isLiked, existingRecord) {
                 if (isLiked && existingRecord) {
-                    buildfire.publicData.delete(existingRecord.id, ENGAGEMENT_COLLECTION, function(err) {
-                        if (err) {
-                            console.error('Error removing like:', err);
-                            callback({ liked: false, count: 0 });
-                        } else {
+                    supabase
+                        .from('media_likes')
+                        .delete()
+                        .eq('id', existingRecord.id)
+                        .then(function() {
                             self.getLikeCount(mediaId, function(count) {
                                 callback({ liked: false, count: count });
                             });
-                        }
-                    });
-                } else {
-                    var likeData = {
-                        type: 'like',
-                        mediaId: mediaId,
-                        userId: userId,
-                        createdAt: new Date().toISOString(),
-                        _buildfire: {
-                            index: {
-                                string1: "like-" + mediaId,
-                                array1: [
-                                    { string1: "like-" + mediaId + "-" + userId }
-                                ]
-                            }
-                        }
-                    };
-
-                    buildfire.publicData.insert(likeData, ENGAGEMENT_COLLECTION, false, function(err, result) {
-                        if (err) {
-                            console.error('Error adding like:', err);
+                        })
+                        .catch(function(err) {
+                            console.error('Error removing like:', err);
                             callback({ liked: false, count: 0 });
-                        } else {
+                        });
+                } else {
+                    supabase
+                        .from('media_likes')
+                        .insert({
+                            media_id: mediaId,
+                            user_id: userId
+                        })
+                        .then(function() {
                             self.getLikeCount(mediaId, function(count) {
                                 callback({ liked: true, count: count });
                             });
-                        }
-                    });
+                        })
+                        .catch(function(err) {
+                            console.error('Error adding like:', err);
+                            callback({ liked: false, count: 0 });
+                        });
                 }
             });
         },
 
         recordShare: function(mediaId, userId, callback) {
-            var shareData = {
-                type: 'share',
-                mediaId: mediaId,
-                userId: userId,
-                createdAt: new Date().toISOString(),
-                _buildfire: {
-                    index: {
-                        string1: "share-" + mediaId,
-                        array1: [
-                            { string1: "share-" + mediaId + "-" + userId }
-                        ]
-                    }
-                }
-            };
+            if (!supabase) {
+                console.warn('Supabase not available');
+                if (callback) callback(new Error('Supabase not available'));
+                return;
+            }
 
-            buildfire.publicData.insert(shareData, ENGAGEMENT_COLLECTION, false, function(err) {
-                if (err) {
+            supabase
+                .from('media_shares')
+                .insert({
+                    media_id: mediaId,
+                    user_id: userId
+                })
+                .then(function() {
+                    if (callback) callback(null);
+                })
+                .catch(function(err) {
                     console.error('Error recording share:', err);
-                }
-                if (callback) callback(err);
-            });
+                    if (callback) callback(err);
+                });
         },
 
-        recordComment: function(mediaId, userId, callback) {
-            var commentData = {
-                type: 'comment',
-                mediaId: mediaId,
-                userId: userId,
-                createdAt: new Date().toISOString(),
-                _buildfire: {
-                    index: {
-                        string1: "comment-" + mediaId,
-                        array1: [
-                            { string1: "comment-" + mediaId + "-" + userId }
-                        ]
-                    }
-                }
+        addComment: function(mediaId, userId, commentText, callback) {
+            if (!supabase) {
+                console.warn('Supabase not available');
+                if (callback) callback(new Error('Supabase not available'));
+                return;
+            }
+
+            supabase
+                .from('media_comments')
+                .insert({
+                    media_id: mediaId,
+                    user_id: userId,
+                    comment_text: commentText
+                })
+                .then(function() {
+                    if (callback) callback(null);
+                })
+                .catch(function(err) {
+                    console.error('Error adding comment:', err);
+                    if (callback) callback(err);
+                });
+        },
+
+        getComments: function(mediaId, callback) {
+            if (!supabase) {
+                console.warn('Supabase not available');
+                callback([]);
+                return;
+            }
+
+            supabase
+                .from('media_comments')
+                .select('*')
+                .eq('media_id', mediaId)
+                .order('created_at', { ascending: false })
+                .then(function(response) {
+                    callback(response.data || []);
+                })
+                .catch(function(err) {
+                    console.error('Error getting comments:', err);
+                    callback([]);
+                });
+        },
+
+        loadEngagementData: function(mediaId, userId, callback) {
+            var self = this;
+            var result = {
+                likeCount: 0,
+                commentCount: 0,
+                isLiked: false
             };
 
-            buildfire.publicData.insert(commentData, ENGAGEMENT_COLLECTION, false, function(err) {
-                if (err) {
-                    console.error('Error recording comment:', err);
-                }
-                if (callback) callback(err);
+            self.getLikeCount(mediaId, function(likeCount) {
+                result.likeCount = likeCount;
+
+                self.getCommentCount(mediaId, function(commentCount) {
+                    result.commentCount = commentCount;
+
+                    if (userId) {
+                        self.isLikedByUser(mediaId, userId, function(isLiked) {
+                            result.isLiked = isLiked;
+                            callback(result);
+                        });
+                    } else {
+                        callback(result);
+                    }
+                });
             });
         }
     };
