@@ -1718,7 +1718,7 @@ input[type="checkbox"]:checked+.subcategory-label.minus::before {
 
 .list-layout-5 .news-card {
     background: #fff;
-    border-radius: 12px;
+    border-radius: 8px;
     overflow: hidden;
     margin-bottom: 16px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -1738,10 +1738,10 @@ input[type="checkbox"]:checked+.subcategory-label.minus::before {
 
 .list-layout-5 .news-card-image {
     width: 100%;
-    height: auto;
+    height: 340px;
     display: block;
     object-fit: cover;
-    min-height: 200px;
+    border-radius: 8px 8px 0 0;
 }
 
 .list-layout-5 .news-card-overlay {
@@ -1762,12 +1762,13 @@ input[type="checkbox"]:checked+.subcategory-label.minus::before {
 .list-layout-5 .news-card-title {
     color: #ffffff;
     font-size: 18px;
-    font-weight: 600;
+    font-weight: 500;
+    font-family: Roboto, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     line-height: 1.3;
     margin: 0;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
@@ -1928,7 +1929,7 @@ input[type="checkbox"]:checked+.subcategory-label.minus::before {
 
 .list-layout-6 .news-card {
     background: #fff;
-    border-radius: 12px;
+    border-radius: 8px;
     overflow: hidden;
     margin-bottom: 16px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -1948,10 +1949,10 @@ input[type="checkbox"]:checked+.subcategory-label.minus::before {
 
 .list-layout-6 .news-card-image {
     width: 100%;
-    height: auto;
+    height: 340px;
     display: block;
     object-fit: cover;
-    min-height: 200px;
+    border-radius: 8px 8px 0 0;
 }
 
 .list-layout-6 .news-card-overlay {
@@ -1972,12 +1973,13 @@ input[type="checkbox"]:checked+.subcategory-label.minus::before {
 .list-layout-6 .news-card-title {
     color: #ffffff;
     font-size: 18px;
-    font-weight: 600;
+    font-weight: 500;
+    font-family: Roboto, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     line-height: 1.3;
     margin: 0;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }

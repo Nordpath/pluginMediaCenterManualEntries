@@ -100,5 +100,13 @@
                 else
                     return hoursT + ":" + minutesT + ":" + secondsT;
             };
+        }])
+        .filter('shortDate', [function() {
+            return function(dateValue) {
+                if (!dateValue) return '';
+                const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                const date = new Date(dateValue);
+                return months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
+            };
         }]);
 })(window.angular, window.buildfire, window.location);
