@@ -548,7 +548,11 @@
                                 text: link.description,
                                 image: link.imageUrl,
                                 link: result.url
-                            }, function (err, result) { });
+                            }, function (err, result) {
+                                if (!err && window.EngagementService && WidgetMedia.item && WidgetMedia.item.id && $rootScope.user && $rootScope.user._id) {
+                                    window.EngagementService.recordShare(WidgetMedia.item.id, $rootScope.user._id);
+                                }
+                            });
 
                         }
                     });
@@ -779,8 +783,27 @@
                 WidgetMedia.likeCount = 0;
                 WidgetMedia.commentCount = 0;
 
+                if (WidgetMedia.item && WidgetMedia.item.id && window.EngagementService) {
+                    window.EngagementService.getLikeCount(WidgetMedia.item.id).then(function(count) {
+                        WidgetMedia.likeCount = count;
+                        if (!$scope.$$phase) $scope.$apply();
+                    });
+
+                    window.EngagementService.getCommentCount(WidgetMedia.item.id).then(function(count) {
+                        WidgetMedia.commentCount = count;
+                        if (!$scope.$$phase) $scope.$apply();
+                    });
+                }
+
                 WidgetMedia.toggleLike = function () {
                     WidgetMedia.bookmark();
+
+                    if (window.EngagementService && WidgetMedia.item && WidgetMedia.item.id && $rootScope.user && $rootScope.user._id) {
+                        window.EngagementService.toggleLike(WidgetMedia.item.id, $rootScope.user._id).then(function(result) {
+                            WidgetMedia.likeCount = result.count;
+                            if (!$scope.$$phase) $scope.$apply();
+                        });
+                    }
                 };
 
                 WidgetMedia.openComments = function () {

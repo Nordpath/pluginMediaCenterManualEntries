@@ -1,38 +1,52 @@
 <div class="holder padding-zero modern-detail-view">
-    <div class="detail-header">
-        <button class="back-button" ng-click="WidgetMedia.goBack()" aria-label="Go back">
+    <div class="detail-hero-section">
+        <button class="detail-back-button" ng-click="WidgetMedia.goBack()" aria-label="Go back">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
         </button>
-        <h5 class="detail-title">{{WidgetMedia.item.data.title}}</h5>
-        <button class="more-button" ng-click="WidgetMedia.showDrawer()" aria-label="More options">
+        <button class="detail-more-button" ng-click="WidgetMedia.showDrawer()" aria-label="More options">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" fill="currentColor"/>
             </svg>
         </button>
-    </div>
 
-    <div class="detail-media-section">
-        <div ng-if="!WidgetMedia.item.imageLoaded && WidgetMedia.item.data.topImage && !WidgetMedia.showVideo"
-             class="image-placeholder" ng-style="{'padding-top': '125%'}">
-            <div class="image-placeholder__dots">
-                <span></span>
-                <span></span>
-                <span></span>
+        <div class="detail-hero-image-wrapper">
+            <div ng-if="!WidgetMedia.item.imageLoaded && WidgetMedia.item.data.topImage && !WidgetMedia.showVideo"
+                 class="image-placeholder hero-placeholder">
+                <div class="image-placeholder__dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+            <img ng-show="WidgetMedia.item.imageLoaded && !WidgetMedia.showVideo"
+                ng-if="WidgetMedia.item.data.topImage"
+                load-image="3x4"
+                crop-width="900" crop-height="1200" crop-type="crop"
+                title="{{WidgetMedia.item.data.title}}"
+                aria-label="{{WidgetMedia.item.data.title}}"
+                data-final-src="{{WidgetMedia.item.data.topImage}}"
+                image-item="WidgetMedia.item"
+                alt="{{WidgetMedia.item.data.title}}"
+                class="detail-hero-image"/>
+            <div id="myVideo" ng-if="WidgetMedia.showVideo" ng-include="'templates/layouts/video-player.html'" class="detail-hero-video"></div>
+
+            <div class="detail-hero-overlay" ng-if="!WidgetMedia.showVideo">
+                <div class="detail-hero-content">
+                    <h1 class="detail-hero-title">{{WidgetMedia.item.data.title}}</h1>
+                    <div class="detail-hero-meta">
+                        <span class="detail-hero-date" ng-if="WidgetMedia.item.data.dateCreated">
+                            {{WidgetMedia.item.data.dateCreated | date:'MMM d, yyyy'}}
+                        </span>
+                        <span class="detail-hero-separator" ng-if="WidgetMedia.item.data.dateCreated && showViewCount">•</span>
+                        <span class="detail-hero-views" ng-if="showViewCount">
+                            {{WidgetMedia.count || 0}} views
+                        </span>
+                    </div>
+                </div>
             </div>
         </div>
-        <img ng-show="WidgetMedia.item.imageLoaded && !WidgetMedia.showVideo"
-            ng-if="WidgetMedia.item.data.topImage"
-            load-image="4x5"
-            crop-width="800" crop-height="1000" crop-type="crop"
-            title="{{WidgetMedia.item.data.title}}"
-            aria-label="{{WidgetMedia.item.data.title}}"
-            data-final-src="{{WidgetMedia.item.data.topImage}}"
-            image-item="WidgetMedia.item"
-            alt="{{WidgetMedia.item.data.title}}"
-            class="detail-image"/>
-        <div id="myVideo" ng-if="WidgetMedia.showVideo" ng-include="'templates/layouts/video-player.html'"></div>
     </div>
 
     <div class="detail-actions-bar">
@@ -45,7 +59,6 @@
                     <path ng-if="!WidgetMedia.item.data.bookmarked" d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     <path ng-if="WidgetMedia.item.data.bookmarked" d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-                <span ng-if="WidgetMedia.likeCount > 0">{{WidgetMedia.likeCount}}</span>
             </button>
             <button class="action-btn"
                     ng-click="WidgetMedia.openComments()"
@@ -53,7 +66,6 @@
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-                <span ng-if="WidgetMedia.commentCount > 0">{{WidgetMedia.commentCount}}</span>
             </button>
             <button class="action-btn"
                     ng-click="WidgetMedia.share()"
@@ -76,22 +88,20 @@
         </div>
     </div>
 
-    <div class="detail-content">
-        <div class="detail-meta">
-            <p class="detail-date" ng-if="WidgetMedia.item.data.dateCreated">
-                {{WidgetMedia.item.data.dateCreated | date:'MMM d, yyyy'}}
-            </p>
-            <p class="detail-views" ng-if="showViewCount">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                {{WidgetMedia.count || 0}} views
-            </p>
-        </div>
+    <div class="detail-engagement" ng-if="WidgetMedia.item.data.bookmarked || WidgetMedia.commentCount > 0">
+        <p class="engagement-text">
+            <span ng-if="WidgetMedia.likeCount > 0">
+                <strong>{{WidgetMedia.likeCount}}</strong> {{WidgetMedia.likeCount === 1 ? 'like' : 'likes'}}
+            </span>
+            <span ng-if="WidgetMedia.likeCount > 0 && WidgetMedia.commentCount > 0"> • </span>
+            <span ng-if="WidgetMedia.commentCount > 0">
+                <strong>{{WidgetMedia.commentCount}}</strong> {{WidgetMedia.commentCount === 1 ? 'comment' : 'comments'}}
+            </span>
+        </p>
+    </div>
 
+    <div class="detail-content">
         <div class="detail-body">
-            <h2 class="detail-main-title">{{WidgetMedia.item.data.title}}</h2>
             <p class="detail-summary" ng-if="WidgetMedia.item.data.summary">{{WidgetMedia.item.data.summary}}</p>
             <div class="detail-description wysiwyg" ng-if="WidgetMedia.item.data.body" ng-bind-html="WidgetMedia.item.data.body | safeHtml"></div>
         </div>
