@@ -47,7 +47,7 @@
             var MediaCenter = DesignHome._mediaCenter;
 
             DesignHome.layouts = {
-                listLayouts: [{name: "list-1"}, {name: "list-2"}, {name: "list-3"}, {name: "list-4"}, {name: "list-5"}],
+                listLayouts: [{name: "list-1"}, {name: "list-2"}, {name: "list-3"}, {name: "list-4"}, {name: "list-5"}, {name: "list-6"}],
                 itemLayouts: [{name: "item-1"}, {name: "item-2"}]
             };
             DesignHome.changeLayout = function (layoutName, type) {
