@@ -1863,7 +1863,7 @@
                                 text: 'OK',
                                 type: 'primary',
                                 action: function() {
-                                    buildfire.dialog.hide();
+                                    // Dialog closes automatically when button is clicked
                                 }
                             }
                         ]
@@ -1954,7 +1954,7 @@
                                 text: 'Cancel',
                                 type: 'danger',
                                 action: function() {
-                                    buildfire.dialog.hide();
+                                    // Dialog closes automatically when button is clicked
                                 }
                             }
                         ]
