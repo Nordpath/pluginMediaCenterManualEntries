@@ -1543,7 +1543,9 @@ input[type="checkbox"]:checked+.subcategory-label.minus::before {
 
 .list-layout-3 .list-3-image {
     border-radius: 8px;
-    object-fit: cover !important;
+    object-fit: none !important;
+    height: auto !important;
+    width: 100% !important;
 }
 
 .list-layout-3 .image-placeholder {
